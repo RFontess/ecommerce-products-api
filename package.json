@@ -1,0 +1,36 @@
+{
+  "name": "ecommerce-products-api",
+  "version": "1.0.0",
+  "description": "![Status](https://img.shields.io/badge/Status-WIP%20(Work%20In%20Progress)-yellow?style=for-the-badge)\r ![License](https://img.shields.io/badge/License-MIT-blue?style=for-the-badge)",
+  "main": "index.js",
+  "scripts": {
+    "dev": "ts-node src/server.ts",
+    "build": "tsc",
+    "start": "node dist/server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RFontess/ecommerce-products-api.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/RFontess/ecommerce-products-api/issues"
+  },
+  "homepage": "https://github.com/RFontess/ecommerce-products-api#readme",
+  "dependencies": {
+    "express": "^5.2.1"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.6",
+    "@types/node": "^25.6.0",
+    "@typescript-eslint/eslint-plugin": "^8.59.0",
+    "@typescript-eslint/parser": "^8.59.0",
+    "eslint": "^10.2.1",
+    "eslint-config-prettier": "^10.1.8",
+    "prettier": "^3.8.3",
+    "ts-node": "^10.9.2",
+    "typescript": "^6.0.3"
+  }
+}
