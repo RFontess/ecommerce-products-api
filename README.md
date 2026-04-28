@@ -23,7 +23,7 @@ Para ir além de um "CRUD de tutorial", o projeto aplica padrões rigorosos de e
 
 O projeto foi estruturado em um ciclo de 6 fases de desenvolvimento, focando em entregas progressivas e arquitetura limpa:
 
-- [ ] **Fase 1: Core & Setup** — Configuração do ecossistema Node.js + TypeScript, Express e rota de health check.
+- [✔] **Fase 1: Core & Setup** — Configuração do ecossistema Node.js + TypeScript, Express e rota de health check.
 - [ ] **Fase 2: Modelagem Relacional** — Configuração do PostgreSQL via Supabase e modelagem do schema (Product, Category, Store) usando Prisma ORM.
 - [ ] **Fase 3: Regras de Negócio & Validação** — Implementação do CRUD, validação de dados estrita com Zod e middleware global de tratamento de erros.
 - [ ] **Fase 4: Autenticação & Segurança** — Implementação de JWT para registro/login e proteção de rotas com isolamento de dados por loja (`storeId`).
