@@ -6,3 +6,37 @@ generator client {
 datasource db {
   provider  = "postgresql"
 }
+
+model Store {
+  id String @id @default(uuid())
+  name String
+  email String @unique
+  password String
+  active Boolean @default(true)
+  dateCreated DateTime @default(now())
+  products Product[]
+}
+
+model Category {
+  id String @id @default(uuid())
+  name String
+  products Product[]
+}
+
+model Product {
+  id String @id @default(uuid())
+  sku String
+  name String
+  description String?
+  price Decimal
+  costPrice Decimal?
+  stock Int
+  categoryId String?
+  category Category? @relation(fields: [categoryId], references: [id])
+  available Boolean @default(true)
+  dateCreated DateTime @default(now())
+  dateUpdated DateTime @updatedAt
+  storeId String
+  store Store @relation(fields: [storeId], references: [id])
+  @@unique([sku, storeId])
+}
