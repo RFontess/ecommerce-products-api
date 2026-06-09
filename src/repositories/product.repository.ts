@@ -30,14 +30,20 @@ export async function softDelete(id: string){
     });
 }
 
-export async function findAll(){
+export async function findAll(storeId: string){
     return prisma.product.findMany({
-        where: { available: true}
+        where: { 
+            available: true,
+            storeId
+        }
     });
 }
 
-export async function findById(id:string){
-    return prisma.product.findUnique({
-        where: { id }
+export async function findById(id: string, storeId: string){
+    return prisma.product.findFirst({
+        where: { 
+            id,
+            storeId
+        }
     });
 }
