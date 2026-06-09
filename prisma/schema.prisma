@@ -15,12 +15,16 @@ model Store {
   active Boolean @default(true)
   dateCreated DateTime @default(now())
   products Product[]
+  categories Category[]
 }
 
 model Category {
   id String @id @default(uuid())
-  name String @unique
+  name String
   products Product[]
+  storeId String
+  store Store @relation(fields: [storeId], references: [id])
+  @@unique([name, storeId])
 }
 
 model Product {
