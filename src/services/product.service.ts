@@ -31,7 +31,7 @@ export async function findProductById(id: string, storeId: string) {
     return product;
 }
 
-export async function updateProduct(id: string, sku: string, name: string, price: number, stock: number, storeId: string, description?: string, costPrice?: number, categoryId?: string) {
+export async function updateProduct(id: string, storeId: string, sku?: string, name?: string, price?: number, stock?: number,  description?: string, costPrice?: number, categoryId?: string) {
     await findProductById(id, storeId);
 
     const data = {sku, name, price, stock, description, costPrice, categoryId}
