@@ -42,3 +42,9 @@ export async function findById(id:string){
         },
     });
 }
+
+export async function findByEmail(email: string){
+    return prisma.store.findUnique({
+        where: { email }
+    });
+}
