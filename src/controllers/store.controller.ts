@@ -1,11 +1,12 @@
 import * as StoreService from "../services/store.service";
 import { NextFunction, Request, Response } from "express";
+import { AuthRequest } from "../types/express";
 
 export async function createStore(req: Request, res: Response, next: NextFunction){
     try {
         const { name, email, password } = req.body;
 
-        const storeCreated =  await StoreService.createStore(name, email, password);
+        const { password: _,...storeCreated} =  await StoreService.createStore(name, email, password);
         
         res.status(201).json({
             "success": true, 
@@ -20,20 +21,22 @@ export async function getAllStores(req: Request, res: Response, next: NextFuncti
     try {
         const allStores = await StoreService.getAllStores();
 
+        const stores = allStores.map(({password, ...store}) => store)
+
         res.status(200).json({
             "success": true, 
-            "data": allStores
+            "data": stores
         });
     } catch (error) {
         next(error);
     }
 }
 
-export async function getStoreById(req: Request, res: Response, next: NextFunction) {
+export async function getStoreById(req: AuthRequest, res: Response, next: NextFunction) {
     try {
-        const id = req.params.id as string;
+        const id = req.storeId as string
 
-        const store = await StoreService.getStoreById(id);
+        const {password: _, ...store } = await StoreService.getStoreById(id);
 
         res.status(200).json({
             "success": true, 
@@ -44,12 +47,12 @@ export async function getStoreById(req: Request, res: Response, next: NextFuncti
     }
 }
 
-export async function updateStore(req: Request, res: Response, next: NextFunction) {
+export async function updateStore(req: AuthRequest, res: Response, next: NextFunction) {
     try {
         const { name, email, password } = req.body;
-        const id = req.params.id as string;
+        const id = req.storeId as string
 
-        const updatedStore = await StoreService.updateStore(id, name, email, password);
+        const {password: _,...updatedStore} = await StoreService.updateStore(id, name, email, password);
 
         res.status(200).json({
             "success": true, 
@@ -60,9 +63,9 @@ export async function updateStore(req: Request, res: Response, next: NextFunctio
     }
 }
 
-export async function deleteStore(req: Request, res: Response, next: NextFunction) {
+export async function deleteStore(req: AuthRequest, res: Response, next: NextFunction) {
     try {
-        const id = req.params.id as string;
+        const id = req.storeId as string
 
         await StoreService.deleteStore(id);
 
