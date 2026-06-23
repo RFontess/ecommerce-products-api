@@ -20,15 +20,19 @@ export async function findAllProducts(storeId: string) {
 }
 
 export async function findProductById(id: string, storeId: string) {
-    await getStoreById(storeId);
-
-    const product = await ProductRepository.findById(id, storeId);
+    const product = await ProductRepository.findById(id);
 
     if(!product){
         throw new AppError("Nenhum produto encontrado", 404);
     }
 
-    return product;
+    const { storeId: storeIdProduct } = product;
+
+    if( storeId === storeIdProduct ){
+        return product;
+    } else {
+        throw new AppError("Você não possui permissão para acessar este recurso", 403);
+    }
 }
 
 export async function updateProduct(id: string, storeId: string, sku?: string, name?: string, price?: number, stock?: number,  description?: string, costPrice?: number, categoryId?: string) {

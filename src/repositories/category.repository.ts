@@ -28,11 +28,10 @@ export async function findAll(storeId: string){
     })
 }
 
-export async function findById(id: string, storeId: string){
+export async function findById(id: string){
     return prisma.category.findFirst({
         where: {
-            id,
-            storeId
+            id
         },
     });
 }

@@ -15,15 +15,19 @@ export async function getAllCategories(storeId: string){
 }
 
 export async function getCategoryById(id: string, storeId: string){
-    await getStoreById(storeId);
-
-    const category = await CategoryRepository.findById(id, storeId);
+    const category = await CategoryRepository.findById(id);
 
     if(!category){
         throw new AppError("Nenhuma categoria encontrada", 404);
     }
     
-    return category;
+    const { storeId: storeIdCategory } = category;
+
+    if( storeId === storeIdCategory){
+        return category;
+    } else {
+        throw new AppError("Você não possui permissão para acessar este recurso", 403);
+    }
 }
 
 export async function updateCategory(id: string, storeId: string, name?: string){
