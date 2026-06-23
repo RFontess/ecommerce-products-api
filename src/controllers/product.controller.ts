@@ -1,10 +1,11 @@
 import * as ProductService from "../services/product.service";
-import { NextFunction, Request, Response } from "express";
+import { NextFunction, Response } from "express";
+import { AuthRequest } from "../types/express";
 
-export async function createProduct(req: Request, res: Response, next: NextFunction) {
+export async function createProduct(req: AuthRequest, res: Response, next: NextFunction) {
     try {
         const { sku, name, price, stock, description, costPrice, categoryId } = req.body;
-        const storeId = req.params.storeId as string;
+        const storeId = req.storeId ?? req.params.storeId as string;
 
         const productCreated = await ProductService.createProduct(sku, name, price, stock, storeId, description, costPrice, categoryId);
         
@@ -17,9 +18,9 @@ export async function createProduct(req: Request, res: Response, next: NextFunct
     }
 }
 
-export async function getAllProducts(req: Request, res: Response, next: NextFunction) {
+export async function getAllProducts(req: AuthRequest, res: Response, next: NextFunction) {
     try {
-        const storeId = req.params.storeId as string;
+        const storeId = req.storeId ?? req.params.storeId as string;
 
         const allProducts = await ProductService.findAllProducts(storeId);
 
@@ -32,10 +33,10 @@ export async function getAllProducts(req: Request, res: Response, next: NextFunc
     }
 }
 
-export async function getProductById(req: Request, res: Response, next: NextFunction) {
+export async function getProductById(req: AuthRequest, res: Response, next: NextFunction) {
     try {
         const id = req.params.id as string;
-        const storeId = req.params.storeId as string;
+        const storeId = req.storeId ?? req.params.storeId as string;
 
         const product = await ProductService.findProductById(id, storeId);
 
@@ -49,11 +50,11 @@ export async function getProductById(req: Request, res: Response, next: NextFunc
 
 }
 
-export async function updateProduct(req: Request, res: Response, next: NextFunction) {
+export async function updateProduct(req: AuthRequest, res: Response, next: NextFunction) {
     try {
         const { sku, name, price, stock, description, costPrice, categoryId } = req.body;
         const id = req.params.id as string;
-        const storeId = req.params.storeId as string;
+        const storeId = req.storeId ?? req.params.storeId as string;
 
         const updatedProduct = await ProductService.updateProduct(id, storeId, sku, name, price, stock, description, costPrice, categoryId)
         
@@ -66,10 +67,10 @@ export async function updateProduct(req: Request, res: Response, next: NextFunct
     }
 }
 
-export async function deleteProduct(req: Request, res: Response, next: NextFunction) {
+export async function deleteProduct(req: AuthRequest, res: Response, next: NextFunction) {
     try {
         const id = req.params.id as string;
-        const storeId = req.params.storeId as string;
+        const storeId = req.storeId ?? req.params.storeId as string;
 
         await ProductService.deleteProduct(id, storeId);
 

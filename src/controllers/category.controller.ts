@@ -1,10 +1,11 @@
 import * as CategoryService from "../services/category.service";
-import { NextFunction, Request, Response } from "express";
+import { NextFunction, Response } from "express";
+import { AuthRequest } from "../types/express";
 
-export async function createCategory(req: Request, res: Response, next: NextFunction) {
+export async function createCategory(req: AuthRequest, res: Response, next: NextFunction) {
     try {
         const { name } = req.body;
-        const storeId = req.params.storeId as string;
+        const storeId = req.storeId ?? req.params.storeId as string;
 
         const categoryCreated = await CategoryService.createCategory(name, storeId);
 
@@ -17,9 +18,9 @@ export async function createCategory(req: Request, res: Response, next: NextFunc
     }
 }
 
-export async function getAllCategories(req: Request, res: Response, next: NextFunction) {
+export async function getAllCategories(req: AuthRequest, res: Response, next: NextFunction) {
     try {
-        const storeId = req.params.storeId as string;
+        const storeId = req.storeId ?? req.params.storeId as string;
 
         const allCategories = await CategoryService.getAllCategories(storeId);
 
@@ -32,10 +33,10 @@ export async function getAllCategories(req: Request, res: Response, next: NextFu
     }
 }
 
-export async function getCategoryById(req: Request, res: Response, next: NextFunction) {
+export async function getCategoryById(req: AuthRequest, res: Response, next: NextFunction) {
     try {
         const id = req.params.id as string;
-        const storeId = req.params.storeId as string;
+        const storeId = req.storeId ?? req.params.storeId as string;
 
         const category = await CategoryService.getCategoryById(id, storeId);
 
@@ -48,11 +49,11 @@ export async function getCategoryById(req: Request, res: Response, next: NextFun
     }
 }
 
-export async function updateCategory(req: Request, res: Response, next: NextFunction) {
+export async function updateCategory(req: AuthRequest, res: Response, next: NextFunction) {
     try {
         const { name } = req.body;
         const id = req.params.id as string;
-        const storeId = req.params.storeId as string;
+        const storeId = req.storeId ?? req.params.storeId as string;
 
         const updatedCategory = await CategoryService.updateCategory(id, storeId, name);
         
@@ -65,10 +66,10 @@ export async function updateCategory(req: Request, res: Response, next: NextFunc
     }
 }
 
-export async function deleteCategory(req: Request, res: Response, next: NextFunction) {
+export async function deleteCategory(req: AuthRequest, res: Response, next: NextFunction) {
     try {
         const id = req.params.id as string;
-        const storeId = req.params.storeId as string;
+        const storeId = req.storeId ?? req.params.storeId as string;
 
         await CategoryService.deleteCategory(id, storeId);
 
