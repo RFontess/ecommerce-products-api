@@ -1,7 +1,5 @@
-import 'express';
+import { Request } from 'express';
 
-declare module 'express' {
-    interface Request {
-        storeId?: string;
-    }
+export interface AuthRequest extends Request {
+    storeId?: string;
 }
