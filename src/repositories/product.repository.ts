@@ -30,12 +30,12 @@ export async function softDelete(id: string){
     });
 }
 
-export async function findAll(storeId: string){
+export async function findAll(where: Prisma.ProductWhereInput, orderBy: Prisma.ProductOrderByWithRelationInput, skip: number, take: number){
     return prisma.product.findMany({
-        where: { 
-            available: true,
-            storeId
-        }
+        where,
+        orderBy,
+        skip,
+        take,
     });
 }
 
@@ -45,4 +45,8 @@ export async function findById(id: string){
             id
         }
     });
+}
+
+export async function count(where: Prisma.ProductWhereInput) {
+    return prisma.product.count({ where })    
 }

@@ -1,3 +1,4 @@
+import { Prisma } from "../generated/prisma";
 import * as ProductRepository from "../repositories/product.repository";
 import { getStoreById } from "./store.service";
 import { getCategoryById } from "./category.service"; 
@@ -13,10 +14,47 @@ export async function createProduct(sku: string, name: string, price: number, st
     return ProductRepository.create(sku, name, price, stock, storeId, description, costPrice, categoryId);
 }
 
-export async function findAllProducts(storeId: string) {
+export async function findAllProducts(storeId: string, categoryId?: string, minPrice?: number, maxPrice?: number, name?: string, sortBy?: "price" | "name" | "dateCreated" | "stock", order?: "asc" | "desc", page?: number, limit?: number) {
     await getStoreById(storeId);
 
-    return ProductRepository.findAll(storeId);
+    if(!page){
+        page = 1;
+    };
+    if(!limit){
+        limit = 10;
+    };
+    if(!order){
+        order = "desc"
+    }
+    
+    const skip = (page - 1) * limit;
+    const orderBy = { [sortBy ?? "dateCreated"]: order } 
+
+    const where: Prisma.ProductWhereInput = {
+        storeId,
+        available: true,
+    }
+
+    if(categoryId) where.categoryId = categoryId;
+    if(name) where.name = { contains: name, mode: "insensitive" };
+    if(minPrice) where.price = { gte: minPrice};
+    if(maxPrice) where.price = { ...(where.price as object), lte: maxPrice};
+
+    const [data, total] = await Promise.all([
+        ProductRepository.findAll(where, orderBy, skip, limit), 
+        ProductRepository.count(where)
+    ]);
+
+    return { 
+            "data": data,
+            "meta": {
+                "total": total,
+                "page": page,  
+                "limit": limit,
+                "totalPages": Math.ceil( total / limit)
+            }
+             
+            }
 }
 
 export async function findProductById(id: string, storeId: string) {
