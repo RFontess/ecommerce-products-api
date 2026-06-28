@@ -1,6 +1,7 @@
 import * as ProductService from "../services/product.service";
 import { NextFunction, Response } from "express";
 import { AuthRequest } from "../types/express";
+import { productQuerySchema } from "../schemas/product.schema";
 
 export async function createProduct(req: AuthRequest, res: Response, next: NextFunction) {
     try {
@@ -21,13 +22,21 @@ export async function createProduct(req: AuthRequest, res: Response, next: NextF
 export async function getAllProducts(req: AuthRequest, res: Response, next: NextFunction) {
     try {
         const storeId = req.storeId ?? req.params.storeId as string;
+        const query = productQuerySchema.parse(req.query);
 
-        const allProducts = await ProductService.findAllProducts(storeId);
+        const result = await ProductService.findAllProducts(
+            storeId,
+            query.categoryId,
+            query.minPrice,
+            query.maxPrice,
+            query.name,
+            query.sortBy,
+            query.order,
+            query.page,
+            query.limit,
+        );
 
-        res.status(200).json({
-            "success": true, 
-            "data":  allProducts
-        });    
+        res.status(200).json({ success: true, ...result });
     } catch (error) {
         next(error);
     }
