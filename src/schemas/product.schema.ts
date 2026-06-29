@@ -15,7 +15,7 @@ export const productUpdateSchema = productCreateSchema.partial()
 
 export const productQuerySchema = z.object({
     page: z.coerce.number().int().positive().optional(),
-    limit: z.coerce.number().int().positive().optional(),
+    limit: z.coerce.number().int().positive().max(100).optional(),
     sortBy: z.enum(["price", "name", "dateCreated", "stock"]).optional(),
     order: z.enum(["asc", "desc"]).optional(),
     categoryId: z.string().uuid().optional(),

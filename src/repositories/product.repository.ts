@@ -41,9 +41,7 @@ export async function findAll(where: Prisma.ProductWhereInput, orderBy: Prisma.P
 
 export async function findById(id: string){
     return prisma.product.findFirst({
-        where: { 
-            id
-        }
+        where: { id, available: true }
     });
 }
 
